@@ -1,0 +1,20 @@
+name: CICD Static Deployment
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:   
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.IP_ADDRESS }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          script: |
+            cd /var/www/html/stop-watch-app
+            sudo git pull origin main
+            echo "Done"
